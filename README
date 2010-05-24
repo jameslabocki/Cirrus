@@ -1,11 +1,66 @@
-####
-#
-#
-#
-#
+#############
+# Cirrus
+# README
+# jlabocki@redhat.com
+#############
 
-1.1
+1. About
+	1.1 Overview
+	1.2 Directory Structure
+	1.3 Cirrus.sh
+	1.4 Requirements
+2. Installation
+	2.1 Obtaining the latest source
+	2.2 Unpacking
+3. Configuration
+	3.1 CirrusVmList
+4. Help
 
 
 1. About
-1.1
+	1.1 Overview
+		Cirrus is intended to allow users to automatically scale a service running on a virtualization substrate. The approach is "driver" based so that various virtualization technologies can be managed and multiple applications can be monitored from a single point. The main difference between Cirrus and other projects is that it aims to monitor a service running in the cloud  and provide it the resources it needs and also aims to tie systems management into the equation.
+
+| Apache | <---- Cirrus ----> | Virtualization Manager |
+	          \--"Hey, give Apache more resources"
+
+	1.2 Directory Structure
+		/bin/ - Control Scripts
+		/conf/ - Configuration Files
+		/drivers/ - Drivers for substrates (virtualization, systems management, etc)
+		/drivers/conf - Driver Specific Configuration
+		/log/ - Log files
+	1.3 Cirrus.sh
+		/bin/Cirrus.sh is used to add virtual machines and remove virtual machines from a private cloud.
+	1.4 Requirements
+		The following are required
+
+2. Installation
+	2.1 Obtain the latest source
+		http://github.com/jameslabocki/Cirrus
+	2.2 Unpack
+		`tar -xvzf Cirrus-archive.tar.gz`
+		`unzip Cirrus-archive.zip`
+
+3. Configuration
+	3.1 CirrusVmList
+		The CirrusVmList is a csv file located in the global configuration directory (./conf) with the following attributes
+
+		Service Name, Virtual Machine Name, IP Address, MAC Address, Technologies in Use
+
+		For example:
+
+		-- Arbitrary Service Name
+		|	-- Virtual Machine Name
+		|	|		-- IP Address
+		|	|		|		-- MAC Address
+		|	|		|		|	    -- Call RHEV Driver
+		|	|		|		|	    |   -- Call Satellite Action
+		|	|		|		|	    |	|
+		mrggrid,mrgexec19,172.20.128.128,00:1A:4A:14:80:CD,rhev,satellite
+
+		It is important to populate this file with entries for each service you wish to scale. 
+
+4. Help
+	If you need help, email me <jlabocki@redhat.com>
+	
