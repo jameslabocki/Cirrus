@@ -1,0 +1,1 @@
+powershell -NonInteractive -command "& 'C:\Program Files (x86)\RedHat\RHEVManager\RHEVM Scripting Library\ciabListVm.ps1' "

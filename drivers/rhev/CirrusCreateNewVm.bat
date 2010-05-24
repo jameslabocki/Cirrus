@@ -1,0 +1,1 @@
+powershell -NonInteractive -command "& 'C:\Program Files (x86)\RedHat\RHEVManager\RHEVM Scripting Library\ciabCreateNewVm.ps1' %1 %2 %3 %4"
