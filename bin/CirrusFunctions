@@ -4,4 +4,10 @@ logline() {
                 echo "${DATE} ${1}" >> ${logdir}/cirrus.log
 }
 
+#Add VM Function
+addvm() {
+		
+
+}
+
 #
