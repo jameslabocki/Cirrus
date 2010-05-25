@@ -17,7 +17,7 @@ if [ $# -lt 2 ]; then
 fi
 
 # Source Configuration File
-/usr/local/cirrus/conf/Cirrus.conf
+/usr/local/Cirrus/Cirrus/conf/Cirrus.conf
 
 
 #
