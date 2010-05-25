@@ -12,7 +12,7 @@
 # list - List virtual machines in a service
 
 #Error Checking
-if [ $# -lt 2 ]; then
+if [ $# -lt 3 ]; then
 	echo "./Cirrus.sh service add|remove|list [OPTIONS]"
 	exit 1
 fi
@@ -26,35 +26,36 @@ do
 		shift 2
 		;;
 
-		service)
-		service=service
+		-s)
+		service=$2
 		shift 2
 		;;
 
                 add)
-                add=add
-                shift 2
+                action=$1
+                shift 1
                 ;;
 
                 remove)
-                remove=remove
-                shift 2
+                action=$1
+                shift 1
                 ;;
 
                 list)
-                list=list
-                shift 2
+               	action=$1
+                shift 1
                 ;;
 
 
-    *)
-	echo "The arguments to use are"
-	echo "-c: configuration file"
-	echo "add - Add a virtual machine to the service"
-	echo "remove - Remove a virtual machine from the service"
-	echo "list - List virtual machines in a service"
-      shift 1
-    ;;
+		*)
+		echo "The arguments to use are:"
+		echo "-c: configuration file"
+		echo "-s: service"
+		echo "add - Add a virtual machine to the service"
+		echo "remove - Remove a virtual machine from the service"
+		echo "list - List virtual machines in a service"
+		shift 1
+		;;
   esac
 done
 
@@ -63,5 +64,28 @@ if [ -z $config ]; then
 	config=/usr/local/Cirrus/Cirrus/conf/Cirrus.conf
 fi
 
-#
-echo "using $config"
+source ${config}
+source ${libraries}
+
+logline "Starting Cirrus.sh"
+
+case $action
+in
+	add)
+	echo "add"
+	;;
+
+	remove)
+	echo "remove"
+	;;
+
+	list)
+	echo "list"
+	;;
+
+	*)
+	echo "No action specified"
+	exit 1
+	;;
+esac
+

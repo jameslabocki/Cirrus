@@ -1,0 +1,7 @@
+#Log Function
+logline() {
+                DATE=`date '+%m.%d.%y %H:%M:%S'`
+                echo "${DATE} ${1}" >> ${logdir}/cirrus.log
+}
+
+#
