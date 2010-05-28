@@ -13,7 +13,7 @@
 
 #Error Checking
 if [ $# -lt 3 ]; then
-	echo "./Cirrus.sh service add|remove|list [OPTIONS]"
+	echo "./Cirrus.sh -s service add|remove|list [OPTIONS]"
 	exit 1
 fi
 
@@ -73,6 +73,7 @@ case $action
 in
 	add)
 	echo "add"
+	addvm $service
 	;;
 
 	remove)

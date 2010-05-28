@@ -2,3 +2,93 @@
 05.24.10 23:27:58 Starting Cirrus.sh
 05.24.10 23:28:16 Starting Cirrus.sh
 05.24.10 23:31:08 Starting Cirrus.sh
+05.26.10 21:47:24 Starting Cirrus.sh
+05.26.10 21:47:59 Starting Cirrus.sh
+05.26.10 21:50:17 Starting Cirrus.sh
+05.26.10 21:50:17 addvm mrggrid Called
+05.26.10 21:54:10 Starting Cirrus.sh
+05.26.10 21:54:10 addvm mrggrid called
+05.26.10 21:55:09 Starting Cirrus.sh
+05.26.10 21:55:09 addvm mrggrid called
+05.26.10 21:55:09 using /usr/local/Cirrus/Cirrus/conf/Cirrus.conf
+05.26.10 21:56:34 Starting Cirrus.sh
+05.26.10 21:56:34 addvm mrggrid called
+05.26.10 21:59:33 Starting Cirrus.sh
+05.26.10 21:59:33 addvm mrggrid called
+05.26.10 22:01:27 Starting Cirrus.sh
+05.26.10 22:01:27 addvm mrggrid called
+05.26.10 22:04:44 Starting Cirrus.sh
+05.26.10 22:04:44 addvm mrggrid called
+05.26.10 22:13:23 Starting Cirrus.sh
+05.26.10 22:13:23 addvm mrggrid called
+05.26.10 22:13:35 Starting Cirrus.sh
+05.26.10 22:13:35 addvm mrggrid called
+05.26.10 22:24:40 Starting Cirrus.sh
+05.26.10 22:25:03 Starting Cirrus.sh
+05.26.10 22:25:03 addvm mrggrid called
+05.26.10 22:25:03 rhev:full
+05.26.10 22:25:03 satellite:full
+05.26.10 22:25:58 Starting Cirrus.sh
+05.26.10 22:25:58 addvm mrggrid called
+05.26.10 22:25:58 driver:rhev
+05.26.10 22:25:58 driver:satellite
+05.26.10 22:32:12 Starting Cirrus.sh
+05.26.10 22:32:12 addvm mrggrid called
+05.26.10 22:32:12 driver:rhev
+05.26.10 22:32:12 driver:satellite
+05.26.10 22:32:30 Starting Cirrus.sh
+05.26.10 22:32:30 addvm mrggrid called
+05.26.10 22:32:30 driver:rhev
+05.26.10 22:32:30 driver:satellite
+05.26.10 22:35:44 Starting Cirrus.sh
+05.26.10 22:35:44 addvm mrggrid called
+05.26.10 22:35:44 driver:rhev
+05.26.10 22:35:44 driver:satellite
+05.26.10 22:36:22 Starting Cirrus.sh
+05.26.10 22:36:22 addvm mrggrid called
+05.26.10 22:36:22 driver:rhev
+05.26.10 22:36:22 driver:satellite
+05.26.10 22:42:43 Starting Cirrus.sh
+05.26.10 22:42:43 addvm mrggrid called
+05.26.10 22:42:43 driver:rhev
+05.26.10 22:42:43 driver:satellite
+05.26.10 22:43:19 Starting Cirrus.sh
+05.26.10 22:43:19 addvm mrggrid called
+05.26.10 22:43:19 driver:rhev
+05.26.10 22:43:19 driver:satellite
+05.27.10 21:33:19 Starting Cirrus.sh
+05.27.10 21:33:19 addvm mrggrid called
+05.27.10 21:33:19 driver:rhev
+05.27.10 21:33:19 driver:satellite
+05.27.10 21:34:21 Starting Cirrus.sh
+05.27.10 21:34:21 addvm mrggrid called
+05.27.10 21:34:21 driver:rhev
+05.27.10 21:34:21 driver:satellite
+05.27.10 21:35:49 Starting Cirrus.sh
+05.27.10 21:35:49 addvm mrggrid called
+05.27.10 21:35:49 driver:rhev
+05.27.10 21:35:49 driver:satellite
+05.27.10 21:37:24 Starting Cirrus.sh
+05.27.10 21:37:24 addvm mrggrid called
+05.27.10 21:37:24 driver:rhev
+05.27.10 21:37:24 driver:satellite
+05.27.10 21:38:36 Starting Cirrus.sh
+05.27.10 21:38:36 addvm mrggrid called
+05.27.10 21:38:36 driver:rhev
+05.27.10 21:38:36 driver:satellite
+05.27.10 21:38:44 Starting Cirrus.sh
+05.27.10 21:38:44 addvm mrggrid called
+05.27.10 21:38:44 driver:rhev
+05.27.10 21:38:44 driver:satellite
+05.27.10 21:44:47 Starting Cirrus.sh
+05.27.10 21:44:47 addvm mrggrid called
+05.27.10 21:44:47 driver:rhev
+05.27.10 21:44:47 driver:satellite
+05.27.10 21:47:48 Starting Cirrus.sh
+05.27.10 21:47:48 addvm mrggrid called
+05.27.10 21:47:48 driver:rhev
+05.27.10 21:47:48 driver:satellite
+05.27.10 21:48:48 Starting Cirrus.sh
+05.27.10 21:48:48 addvm mrggrid called
+05.27.10 21:48:48 driver:rhev
+05.27.10 21:48:48 driver:satellite

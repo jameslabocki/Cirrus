@@ -5,8 +5,27 @@ logline() {
 }
 
 #Add VM Function
+#Pass Service Name as $1 to this function
 addvm() {
+
+		logline "addvm ${1} called"		
 		
+		#Figure out what drivers are defined for a service
+		line=`grep -m 1 ${1} $vmlist`
+		servicename=`echo ${line} |awk -F "," '{print $1}'`
+		virtualmachine=`echo ${line} |awk -F "," '{print $2}'`
+		ipaddress=`echo ${line} |awk -F "," '{print $3}'`
+		macaddress=`echo ${line} |awk -F "," '{print $4}'`
+		drivera=`echo ${line} |awk -F "," '{print $5}'`
+		driverb=`echo ${line} |awk -F "," '{print $6}'`
+		driverc=`echo ${line} |awk -F "," '{print $7}'`
+		driverd=`echo ${line} |awk -F "," '{print $8}'`
+
+		#loop through drivers
+		for x in ${drivera} ${driverb} ${driverc} ${driverd}; do
+				logline "driver:${x}"
+				${driverdir}/${x}/client/CirrusCreateNewVm.sh ${config}
+		done
 
 }
 

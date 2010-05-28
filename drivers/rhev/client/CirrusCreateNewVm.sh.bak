@@ -1,14 +1,27 @@
 #!/bin/sh
 # Author: jlabocki@redhat.com
-# Date: 05.27.10
-# Use: CirrusCreateNewVm.sh [config] [Template]
+# Date: 05.02.10
+# Use: CirrusCreateNewVm.sh [Template]
+# This script takes a csv file containing hostname,ip,mac (${gridlist}) and calls a remote script on
+#    1. satellite server (${satellite}) to add the system to cobbler so it receives the proper ip and mac address
+#    2. rhev-m server (${rhevm}) to add a virtual machine with the proper mac address.
 #
 # [Template] - The ID of the template to use in RHEV. This bypasses the use of Satellite to provision the virtual machine and uses a RHEV template. This would be a great place to leverage deltacloud to be virtualization agnostic.
 
-source ${1}
-source ${driverdir}/rhev/conf/rhev.conf
-
-echo ${bindir}
+#RHEVM Username
+username=admin
+#RHEVM Server
+rhevm=ra-rhevm2-vm
+#Satellite Server
+satellite=ra-sat-vm
+#Satellite User
+satusername=root
+#Path to RHEVM Scripting Library
+libpath="/cygdrive/c/Program\ Files\ \(x86\)/RedHat/RHEVManager/RHEVM\ Scripting\ Library"
+#Grid Node List
+gridlist=/home/mrgmgr/GridNodeList
+#domain
+domain=ra.rh.com
 
 #Get a list of vms
 mrgexecvms=`ssh -f ${username}@${rhevm} "${libpath}/ciabListVm.bat"  |grep -i name |grep mrgexec |awk -F":" '{print $2}' |sort |tail -1 | awk '{gsub(/^[ \t]+|[ \t]+$/,"")};1' |awk '{sub(/\r$/,"")};1'`
@@ -55,4 +68,3 @@ else
 	echo "use satellite"
 	ssh -f ${username}@${rhevm} "${libpath}/ciabCreateNewVm.bat ${nodename} ${nodeip} ${nodemac} none"
 fi
-
