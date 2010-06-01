@@ -16,15 +16,15 @@ addvm() {
 		virtualmachine=`echo ${line} |awk -F "," '{print $2}'`
 		ipaddress=`echo ${line} |awk -F "," '{print $3}'`
 		macaddress=`echo ${line} |awk -F "," '{print $4}'`
-		drivera=`echo ${line} |awk -F "," '{print $5}'`
-		driverb=`echo ${line} |awk -F "," '{print $6}'`
-		driverc=`echo ${line} |awk -F "," '{print $7}'`
-		driverd=`echo ${line} |awk -F "," '{print $8}'`
+		drivera=`echo ${line} |awk -F "," '{print $5}' |awk -F ";" '{print $2}'`
+		driverb=`echo ${line} |awk -F "," '{print $6}' |awk -F ";" '{print $2}'`
+		driverc=`echo ${line} |awk -F "," '{print $7}' |awk -F ";" '{print $2}'`
+		driverd=`echo ${line} |awk -F "," '{print $8}' |awk -F ";" '{print $2}'`
 
 		#loop through drivers
 		for x in ${drivera} ${driverb} ${driverc} ${driverd}; do
 				logline "driver:${x}"
-				${driverdir}/${x}/client/CirrusCreateNewVm.sh ${config}
+				${driverdir}/${x}/client/CirrusCreateNewVm.sh ${config} ${servicename}
 		done
 
 }

@@ -1,0 +1,4 @@
+#This file maps services as defined in the CirrusVmList file to Profiles in Cobbler
+#Service:Profile
+mrggrid;coe-mrg-gridexec:22:tenants
+

@@ -19,7 +19,7 @@
 
 1. About
 	1.1 Overview
-		Cirrus is intended to allow users to automatically scale a service running on a virtualization substrate. The approach is "driver" based so that various virtualization technologies can be managed and multiple applications can be monitored from a single point. The main difference between Cirrus and other projects is that it aims to monitor a service running in the cloud  and provide it the resources it needs and also aims to tie systems management into the equation.
+		Cirrus is intended to allow users to automatically scale a service running on a virtualization substrate. The approach is "driver" based so that various virtualization technologies can be managed and multiple applications can be monitored from a single point. The main difference between Cirrus and other projects is that it aims to monitor a service running in the cloud  and provide it the resources it needs and also aims to tie systems management into the equation (dhcp, dns, patch management).
 
 | Apache | <---- Cirrus ----> | Virtualization Manager |
 	          \--"Hey, give Apache more resources"
@@ -27,13 +27,25 @@
 	1.2 Directory Structure
 		/bin/ - Control Scripts
 		/conf/ - Configuration Files
-		/drivers/ - Drivers for substrates (virtualization, systems management, etc)
+		/drivers/ - Drivers for components (virtualization, systems management, etc)
 		/drivers/conf - Driver Specific Configuration
 		/log/ - Log files
 	1.3 Cirrus.sh
 		/bin/Cirrus.sh is used to add virtual machines and remove virtual machines from a private cloud.
 	1.4 Requirements
 		The following are required
+		1.4.1 Cirrus Server
+			On the server which you wish to run Cirrus create a cirrus user
+			`useradd cirrus`
+			Make a directory to hold the Cirrus scripts. By default /usr/local/Cirrus
+			`mkdir /usr/local/Cirrus`
+			Change ownership to cirrus
+			`chown -R cirrus:cirrus /usr/local/Cirrus`
+		1.4.2 SSH keypair
+			As the Cirrus user create a SSH keypair
+			`ssh-keygen`
+			The public key, by default /home/cirrus/.ssh/id_rsa.pub, will need to be copied to the servers you wish to connect to via the Cirrus scripts.
+		
 
 2. Installation
 	2.1 Obtain the latest source
