@@ -80,29 +80,11 @@ logline "$0: using profile: ${profile}"
 
 #Add system to Cobbler on Satellite
 logline "$0:cobbler system add --name=${virtualmachine} --profile=${profile} --mac=${macaddress} --ip=${ipaddress} --hostname=${fqdn} --dns-name=${fqdn}"
-ssh -f ${satusername}@${satellite} "cobbler system add --name=${virtualmachine} --profile=${servicename} --mac=${macaddress} --ip=${ipaddress} --hostname=${fqdn} --dns-name=${fqdn}"
+ssh -f ${satusername}@${satellite} "cobbler system add --name=${virtualmachine} --profile=${profile} --mac=${macaddress} --ip=${ipaddress} --hostname=${fqdn} --dns-name=${fqdn}"
 
 #Sync Cobbler
 logline "$0:syncing cobbler"
-ssh -f ${satusername}@${satellite} "cobbler sync"
+ssh -f ${satusername}@${satellite} "cobbler sync" &> /dev/null
 
-##Call Script to Create virtual machine on rhevm (ra-rhevm2-vm)
-#if [ $1 ]; then
-#	#Use template name ($1) and get template ID to pass to rhev api
-#	echo "use template"
-#	#templateid=`ssh -f ${username}@${rhevm} "${libpath}/ciabListTemplates.bat $1" |grep -i TemplateId |awk -F" " '{print $3}'`
-#	echo "templateid:${templateid}"
-#	echo "nodename:${nodename}"
-#	echo "nodeip:${nodeip}"
-#	echo "nodemac:${nodemac}"
-#	echo "ssh -f ${username}@${rhevm} \"${libpath}/ciabCreateNewVm.bat ${nodename} ${nodeip} ${nodemac} ${1}\""
-#	echo ""
-#	this=`ssh -f ${username}@${rhevm} "${libpath}/ciabCreateNewVm.bat ${nodename} ${nodeip} ${nodemac} ${1}"`
-#	echo ""
-#	echo "Ran Create New Vm"
-#else
-#	echo "use satellite"
-#	ssh -f ${username}@${rhevm} "${libpath}/ciabCreateNewVm.bat ${nodename} ${nodeip} ${nodemac} none"
-#fi
-#
-#
+logline "$0:complete"
+exit 0

@@ -72,7 +72,6 @@ logline "Starting Cirrus.sh"
 case $action
 in
 	add)
-	echo "add"
 	addvm $service
 	;;
 
