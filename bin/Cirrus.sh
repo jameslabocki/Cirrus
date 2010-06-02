@@ -77,6 +77,7 @@ in
 
 	remove)
 	echo "remove"
+	removevm $service
 	;;
 
 	list)

@@ -1,69 +1,90 @@
 #!/bin/sh
 # Author: jlabocki@redhat.com
-# Date: 05.13.10
-# Use: CirrusRemoveVm.sh
-# This script takes a csv file containing hostname,ip,mac (${gridlist}) and calls a remote script on
-#    1. rhev-m server (${rhevm}) to add a virtual machine with the proper mac address.
-#    2. satellite server (${satellite}) to remove the system to cobbler so it receives the proper ip and mac address
+# Date: 05.27.10
+# Use: CirrusRemoveVm.sh [configuration] [servicename]
+# This script takes a csv file containing hostname,ip,mac (${vmlist}) and calls a remote script on
+#    1. A RHEVM server to remove a virtual machine
 #
 
-#RHEVM Username
-username=admin
-#RHEVM Server
-rhevm=ra-rhevm2-vm
-#Satellite Server
-satellite=ra-sat-vm
-#Satellite User
-satusername=root
-#Path to RHEVM Scripting Library
-libpath="/cygdrive/c/Program\ Files\ \(x86\)/RedHat/RHEVManager/RHEVM\ Scripting\ Library"
-#Grid Node List
-gridlist=/home/mrgmgr/GridNodeList
-#domain
-domain=ra.rh.com
+source ${1}
+source ${libraries}
+source ${driverdir}/satellite/conf/satellite.conf
+
+servicename=${2}
+
+#Find a single line to get things from
+line=`grep -m 1 ${2} $vmlist`
+	logline "$0:line is : ${line}"
+	servicename=`echo ${line} |awk -F "," '{print $1}'`
+	virtualmachine=`echo ${line} |awk -F "," '{print $2}'`
+	virtualmachineprefix=`echo ${virtualmachine} |sed 's/[0-9]*//g' `
+	ipaddress=`echo ${line} |awk -F "," '{print $3}'`
+	macaddress=`echo ${line} |awk -F "," '{print $4}'`
+	virt=`echo ${line} |awk -F"virt" '{print $2}' |awk -F"," '{print $1}'`
+	drivera=`echo ${line} |awk -F "," '{print $5}' |awk -F ";" '{print $2}'`
+	driverb=`echo ${line} |awk -F "," '{print $6}' |awk -F ";" '{print $2}'`
+	driverc=`echo ${line} |awk -F "," '{print $7}' |awk -F ";" '{print $2}'`
+	driverd=`echo ${line} |awk -F "," '{print $8}' |awk -F ";" '{print $2}'`
+	logline "$0:virt is: ${virt}"
+
 
 #Get a list of vms
-mrgexecvms=`ssh -f ${username}@${rhevm} "${libpath}/ciabListVm.bat"  |grep -i name |grep mrgexec |awk -F":" '{print $2}' |sort -r |tail -1 | awk '{gsub(/^[ \t]+|[ \t]+$/,"")};1' |awk '{sub(/\r$/,"")};1'`
+case $virt
+in
+
+	";rhev")
+	source ${driverdir}/rhev/conf/rhev.conf
+	CirrusListVm=`ssh -f ${username}@${rhevm} "${libpath}/CirrusListVm.bat"  |grep -i name |grep ${virtualmachineprefix} |awk -F":" '{print $2}' |sort |tail -1 | awk '{gsub(/^[ \t]+|[ \t]+$/,"")};1' |awk '{sub(/\r$/,"")};1'`
+	;;
+
+	*)
+	logline "$0:no virt defined, cannot list current virtual machines"
+	exit 1
+	;;
+
+esac
+	
+	logline "$0: currently running virtual machine is: ${CirrusListVm}"
+
 
 #If no virtual machines named mrgexec exist then start mrgexec01, otherwise get the last one.
-if  [[ -z `echo ${mrgexecvms} |grep mrgexec` ]]; then
-	nextnode=mrgexec1
+if  [[ -z `echo ${CirrusListVm} |grep ${virtualmachineprefix}` ]]; then
+	nextnode=${virtualmachineprefix}1
 else 
-        nextnode=`echo ${mrgexecvms} |cut -c 8-9`
+        number=`echo ${CirrusListVm} |sed 's/[a-z][A-Z]*//g'`
         next=$((number+1))
-        nextnode=mrgexec${next}
+        nextnode=${virtualmachineprefix}${next}
 fi
+
+	logline "$0: next virtual machine is: ${nextnode}"
 
 #Get new node details from gridlist file
-detail=`grep ${nextnode}, ${gridlist}`
+line=`grep ${nextnode}, ${vmlist}`
+        logline "$0:next virtual machine line is : ${line}"
+        servicename=`echo ${line} |awk -F "," '{print $1}'`
+        virtualmachine=`echo ${line} |awk -F "," '{print $2}'`
+        virtualmachineprefix=`echo ${virtualmachine} |sed 's/[0-9]*//g' `
+        ipaddress=`echo ${line} |awk -F "," '{print $3}'`
+        macaddress=`echo ${line} |awk -F "," '{print $4}'`
+	fqdn=${virtualmachine}.${domain}
 
-#Split out csv values
-nodeip=`echo ${detail} | awk -F"," '{print $2}'`
-nodemac=`echo ${detail} | awk -F"," '{print $3}'`
-nodename=`echo ${detail} | awk -F"," '{print $1}'`
-fqdn=${nodename}.${domain}
+#See if a profilemap exists for the service name, if so, use it, if not, use the service name for profile
+line=`grep ${servicename} ${driverdir}/satellite/conf/profilemap |awk -F";" '{print $2}'`
+logline "$0: line is : $line"
+if [[ -z `echo ${line}` ]]; then
+	profile=${servicename}
+else
+	profile=${line}
+fi
+logline "$0: using profile: ${profile}"
 
 #Add system to Cobbler on Satellite
-ssh -f ${satusername}@${satellite} "cobbler system add --name=${nodename} --profile=coe-mrg-gridexec:22:tenants --mac=${nodemac} --ip=${nodeip} --hostname=${fqdn} --dns-name=${fqdn}"
+logline "$0:cobbler system add --name=${virtualmachine} --profile=${profile} --mac=${macaddress} --ip=${ipaddress} --hostname=${fqdn} --dns-name=${fqdn}"
+ssh -f ${satusername}@${satellite} "cobbler system add --name=${virtualmachine} --profile=${profile} --mac=${macaddress} --ip=${ipaddress} --hostname=${fqdn} --dns-name=${fqdn}"
 
 #Sync Cobbler
-ssh -f ${satusername}@${satellite} "cobbler sync"
+logline "$0:syncing cobbler"
+ssh -f ${satusername}@${satellite} "cobbler sync" &> /dev/null
 
-#Call Script to Create virtual machine on rhevm (ra-rhevm2-vm)
-if [ $1 ]; then
-	#Use template name ($1) and get template ID to pass to rhev api
-	echo "use template"
-	#templateid=`ssh -f ${username}@${rhevm} "${libpath}/ciabListTemplates.bat $1" |grep -i TemplateId |awk -F" " '{print $3}'`
-	echo "templateid:${templateid}"
-	echo "nodename:${nodename}"
-	echo "nodeip:${nodeip}"
-	echo "nodemac:${nodemac}"
-	echo "ssh -f ${username}@${rhevm} \"${libpath}/ciabCreateNewVm.bat ${nodename} ${nodeip} ${nodemac} ${1}\""
-	echo ""
-	this=`ssh -f ${username}@${rhevm} "${libpath}/ciabCreateNewVm.bat ${nodename} ${nodeip} ${nodemac} ${1}"`
-	echo ""
-	echo "Ran Create New Vm"
-else
-	echo "use satellite"
-	ssh -f ${username}@${rhevm} "${libpath}/ciabCreateNewVm.bat ${nodename} ${nodeip} ${nodemac} none"
-fi
+logline "$0:complete"
+exit 0
