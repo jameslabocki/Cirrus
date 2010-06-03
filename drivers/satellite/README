@@ -3,6 +3,7 @@
 
 1. Deployment
 	1.1 Edit conf/satellite.conf appropriately for your environment.
+	1.2 Edit client/CirrusRemoveVm.pl and apply Satellite credentials/hostname.
 	1.3 Add any profile maps to conf/profilemap, if no profile is specified for a service the servicename
 		will be used in the call to cobbler.
 

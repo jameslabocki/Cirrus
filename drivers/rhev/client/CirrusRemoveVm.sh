@@ -27,7 +27,6 @@ line=`grep -m 1 ${2} $vmlist`
 	driverd=`echo ${line} |awk -F "," '{print $8}' |awk -F ";" '{print $2}'`
 	logline "$0:virt is: ${virt}"
 
-
 #Get a list of vms
 case $virt
 in
@@ -52,8 +51,7 @@ if  [[ -z `echo ${CirrusListVm} |grep ${virtualmachineprefix}` ]]; then
 	nextnode=${virtualmachineprefix}1
 else 
         number=`echo ${CirrusListVm} |sed 's/[a-z][A-Z]*//g'`
-        next=$((number+1))
-        nextnode=${virtualmachineprefix}${next}
+        nextnode=${virtualmachineprefix}${number}
 fi
 
 	logline "$0: next virtual machine is: ${nextnode}"
@@ -68,23 +66,15 @@ line=`grep ${nextnode}, ${vmlist}`
         macaddress=`echo ${line} |awk -F "," '{print $4}'`
 	fqdn=${virtualmachine}.${domain}
 
-#See if a profilemap exists for the service name, if so, use it, if not, use the service name for profile
-line=`grep ${servicename} ${driverdir}/satellite/conf/profilemap |awk -F";" '{print $2}'`
-logline "$0: line is : $line"
-if [[ -z `echo ${line}` ]]; then
-	profile=${servicename}
-else
-	profile=${line}
-fi
-logline "$0: using profile: ${profile}"
-
-#Add system to Cobbler on Satellite
-logline "$0:cobbler system add --name=${virtualmachine} --profile=${profile} --mac=${macaddress} --ip=${ipaddress} --hostname=${fqdn} --dns-name=${fqdn}"
-ssh -f ${satusername}@${satellite} "cobbler system add --name=${virtualmachine} --profile=${profile} --mac=${macaddress} --ip=${ipaddress} --hostname=${fqdn} --dns-name=${fqdn}"
+#Remove system to Cobbler on Satellite
+logline "$0:cobbler system remove --name=${virtualmachine}"
+ssh -f ${satusername}@${satellite} "cobbler system remove --name=${virtualmachine}"
 
 #Sync Cobbler
 logline "$0:syncing cobbler"
 ssh -f ${satusername}@${satellite} "cobbler sync" &> /dev/null
+
+#Call Removal Perl Script
 
 logline "$0:complete"
 exit 0
