@@ -59,7 +59,7 @@ line=`grep ${servicename} ${driverdir}/rhev/conf/templatemap |awk -F";" '{print 
 logline "$0: line is : $line"
 if [[ -z `echo ${line}` ]]; then
 	#The default template in RHEV
-	template="00000000-0000-0000-0000-000000000000"
+	template="none"
 else
 	template=${line}
 fi
@@ -67,8 +67,16 @@ logline "$0: using template: ${template}"
 
 #Call script on RHEVM server via ssh to create a new virtual machine
 #(Cirrus) --ssh--> (RHEVM(.bat-->.ps1))
-
-
+if [[ $template != "none" ]]; then
+	#Use template name ($1) and get template ID to pass to rhev api
+	this=`ssh -f ${username}@${rhevm} "${libpath}/CirrusCreateNewVm.bat ${virtualmachine} ${ipaddress} ${macaddress} ${template}"`
+	logline "ssh -f ${username}@${rhevm} \"${libpath}/CirrusCreateNewVm.bat ${virtualmachine} ${ipaddress} ${macaddress} ${template}\""
+	logline "$0: Creating Virtual Machine using template"
+else
+	this=`ssh -f ${username}@${rhevm} "${libpath}/CirrusCreateNewVm.bat ${virtualmachine} ${ipaddress} ${macaddress} none"`
+	logline "ssh -f ${username}@${rhevm} \"${libpath}/CirrusCreateNewVm.bat ${virtualmachine} ${ipaddress} ${macaddress} none\""
+	logline "$0: Creating Virtual Machine without template"
+fi
 
 logline "$0:complete"
 exit 0
