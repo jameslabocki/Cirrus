@@ -1,0 +1,10 @@
+# Satellite driver for Cirrus
+# jlabocki@redhat.com
+
+1. Deployment
+	1.1 Edit conf/satellite.conf appropriately for your environment.
+	1.3 Add any profile maps to conf/profilemap, if no profile is specified for a service the servicename
+		will be used in the call to cobbler.
+
+
+	

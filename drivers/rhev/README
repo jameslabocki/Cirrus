@@ -1,0 +1,12 @@
+# RHEV driver for Cirrus
+# jlabocki@redhat.com
+
+1. Deployment
+	1.1 Edit conf/rhev.conf appropriately for your environment
+	1.2 Copy the contents of rhevm/ to the RHEVM scripting library directory on the RHEVM server
+	1.3 Add any template maps to conf/templatemap, if you don't want to use a template for any services
+		then simple put servicename;none in the templatemap file where servicename is the name of a
+		service defined in the CirrusVmList file. (See Cirrus README)
+
+
+	
