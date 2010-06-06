@@ -68,6 +68,8 @@ logline "$0:syncing cobbler"
 ssh -f ${satusername}@${satellite} "cobbler sync" &> /dev/null
 
 #Call Removal Perl Script
+logline "$0:calling removal perl script"
+${driverdir}/satellite/client/CirrusRemoveVm.pl ${virtualmachine}
 
 logline "$0:complete"
 exit 0

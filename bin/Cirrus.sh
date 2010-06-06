@@ -13,7 +13,7 @@
 
 #Error Checking
 if [ $# -lt 3 ]; then
-	echo "./Cirrus.sh -s service add|remove|list [OPTIONS]"
+	echo "./Cirrus.sh -s <service> add|remove|list [OPTIONS]"
 	exit 1
 fi
 
@@ -49,8 +49,8 @@ do
 
 		*)
 		echo "The arguments to use are:"
-		echo "-c: configuration file"
-		echo "-s: service"
+		echo "-c: <configuration file>"
+		echo "-s: <service>"
 		echo "add - Add a virtual machine to the service"
 		echo "remove - Remove a virtual machine from the service"
 		echo "list - List virtual machines in a service"
