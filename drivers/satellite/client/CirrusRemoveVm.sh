@@ -59,6 +59,17 @@ line=`grep ${nextnode}, ${vmlist}`
         macaddress=`echo ${line} |awk -F "," '{print $4}'`
 	fqdn=${virtualmachine}.${domain}
 
+##############################
+#If fqdn hostnames differ from the VM name uncomment the following lines and comment out the additional "Remove system to Cobbler on Satellite"
+#This is useful if you don't control DNS. Also remember to make similar changes to CirrusCreateVm.sh.
+
+#hostname=`nslookup ${ipaddress} |grep 'name\ ='|awk '{print $4}'| sed -e 's/.$//'`
+#Remove system to Cobbler on Satellite
+#logline "$0:cobbler system remove --name=${hostname}"
+#ssh -f ${satusername}@${satellite} "cobbler system remove --name=${hostname}"
+
+##############################
+
 #Remove system to Cobbler on Satellite
 logline "$0:cobbler system remove --name=${virtualmachine}"
 ssh -f ${satusername}@${satellite} "cobbler system remove --name=${virtualmachine}"

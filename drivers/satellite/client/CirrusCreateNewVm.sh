@@ -78,6 +78,17 @@ else
 fi
 logline "$0: using profile: ${profile}"
 
+#####################################
+#If your fqdn hostnames differ from the VM name uncommend the following lines and comment out the additional "Add system to Cobbler on Satellite"
+#This is useful if you don't control DNS. Also remember to make similar changes to CirrusRemoveVm.sh.
+
+#hostname=`nslookup ${ipaddress} |grep 'name\ ='|awk '{print $4}'| sed -e 's/.$//'`
+#Add system to Cobbler on Satellite
+#logline "$0:cobbler system add --name=${hostname} --profile=${profile} --mac=${macaddress} --ip=${ipaddress} --hostname=${hostname} --dns-name=${hostname}"
+#ssh -f ${satusername}@${satellite} "cobbler system add --name=${hostname} --profile=${profile} --mac=${macaddress} --ip=${ipaddress} --hostname=${hostname} --dns-name=${hostname}"
+
+#####################################
+
 #Add system to Cobbler on Satellite
 logline "$0:cobbler system add --name=${virtualmachine} --profile=${profile} --mac=${macaddress} --ip=${ipaddress} --hostname=${fqdn} --dns-name=${fqdn}"
 ssh -f ${satusername}@${satellite} "cobbler system add --name=${virtualmachine} --profile=${profile} --mac=${macaddress} --ip=${ipaddress} --hostname=${fqdn} --dns-name=${fqdn}"
