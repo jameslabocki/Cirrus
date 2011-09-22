@@ -75,4 +75,6 @@
 
 4. Help
 	If you need help, email me <jlabocki@redhat.com>
+
+5. A very simple prototype web interface has been added to under the web folder. Unfortunately variables are mostly hard coded at this time. Once the list function is implemented we can dynamically build the number of listed, or available, VMs to bring on-line from a capacity standpoint. This is more of an example of how a web front-end could be implemented. For this to be effective SSH keys must be exchanged as the apache user. This is not a very secure option and this setup should never run on a publicly facing server.
 	
